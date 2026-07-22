@@ -1,0 +1,52 @@
+[
+  {
+    "nome": "Ana Souza",
+    "salario": 3500.00,
+    "percentualAuxilios": 12.5
+  },
+  {
+    "nome": "Bruno Oliveira",
+    "salario": 4800.00,
+    "percentualAuxilios": 10.0
+  },
+  {
+    "nome": "Carla Mendes",
+    "salario": 6200.00,
+    "percentualAuxilios": 15.0
+  },
+  {
+    "nome": "Daniel Pereira",
+    "salario": 4100.00,
+    "percentualAuxilios": 8.5
+  },
+  {
+    "nome": "Eduarda Lima",
+    "salario": 5500.00,
+    "percentualAuxilios": 11.0
+  },
+  {
+    "nome": "Felipe Costa",
+    "salario": 7200.00,
+    "percentualAuxilios": 14.0
+  },
+  {
+    "nome": "Gabriela Rocha",
+    "salario": 3900.00,
+    "percentualAuxilios": 9.5
+  },
+  {
+    "nome": "Henrique Alves",
+    "salario": 6800.00,
+    "percentualAuxilios": 13.0
+  },
+  {
+    "nome": "Isabela Martins",
+    "salario": 4600.00,
+    "percentualAuxilios": 10.5
+  },
+  {
+    "nome": "João Ferreira",
+    "salario": 5300.00,
+    "percentualAuxilios": 12.0
+  }
+]
