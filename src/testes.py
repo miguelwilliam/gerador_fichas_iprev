@@ -23,13 +23,29 @@ estrutura = {
 meuExcel = Spreadsheet(
     celulas=estrutura['CELULAS'], 
     linhas=estrutura['LINHAS'], 
-    paginas=['ALIQUOTA', 'CLAUDETE']
+    paginas=['ALIQUOTA', 'CLAUDETE', 'JUNIOR']
     )
 
 meuExcel.caminho = os.getenv('CAMINHO')
-dataframe = meuExcel.carregar_pagina(1) 
+df = meuExcel.carregar_pagina(1) 
 
 for celula, pos in meuExcel.celulas.items():
     pos_pandas = Spreadsheet.excel_para_pandas(pos)
-    print(f'{celula}, {pos_pandas} > {dataframe.iloc[pos_pandas[0], pos_pandas[1]]}')
-    
+
+    # Para extrair o nome da célula
+    if celula == 'NOME':
+        nome = str(df.iloc[pos_pandas[0], pos_pandas[1]]).split(' - ')[0]
+        print(f'{celula}, {pos_pandas} > {nome}') 
+        continue
+
+    print(f'{celula}, {pos_pandas} > {df.iloc[pos_pandas[0], pos_pandas[1]]}')
+
+for col in range(len(df.columns)):
+    if col == 0: continue
+
+    print('==================')
+    for dado, linha in meuExcel.linhas.items():
+        pos_pandas = [linha-1, col]
+        
+        # print(f'{dado}, ({linha-1}, {col}) > {df.iloc[pos_pandas[0], pos_pandas[1]]}')
+        print(f'{dado} > {df.iloc[pos_pandas[0], pos_pandas[1]]}')
