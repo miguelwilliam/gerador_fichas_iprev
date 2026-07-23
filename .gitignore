@@ -1,6 +1,8 @@
 .venv
 venv/
 
+.env
+
 *.pdf
 
 __pycache__/
@@ -10,3 +12,4 @@ __pycache__/
 
 static
 informacoes.json
+BD

@@ -1,72 +1,62 @@
 [
   {
     "NOME": "Erica da Fonseca e Silva Dias",
-    "INSTITUICAO": "Inst. Previd. Munic. São Gonçalo do Amarante",
+    "ORGAO": "Inst. Previd. Munic. São Gonçalo do Amarante",
     "MATRICULA": "1234567-8",
-    "SALARIO_EFETIVO": 1702.07,
-    "GRATIFICACAO": 12747.93
+    "BASE_CALC": 1702.07
   },
   {
     "NOME": "Mariana Souza Lima",
-    "INSTITUICAO": "Secretaria de Educação",
+    "ORGAO": "Secretaria de Educação",
     "MATRICULA": "9876543-2",
-    "SALARIO_EFETIVO": 3925.40,
-    "GRATIFICACAO": 850.50
+    "BASE_CALC": 3925.40
   },
   {
     "NOME": "Ricardo Fernandes Costa",
-    "INSTITUICAO": "Tribunal Regional",
+    "ORGAO": "Tribunal Regional",
     "MATRICULA": "4567890-1",
-    "SALARIO_EFETIVO": 7350.90,
-    "GRATIFICACAO": 2450.00
+    "BASE_CALC": 7350.90
   },
   {
     "NOME": "Patrícia Oliveira Santos",
-    "INSTITUICAO": "Defensoria Pública",
+    "ORGAO": "Defensoria Pública",
     "MATRICULA": "2345678-9",
-    "SALARIO_EFETIVO": 8120.30,
-    "GRATIFICACAO": 3100.75
+    "BASE_CALC": 8120.30
   },
   {
     "NOME": "João Pedro Martins",
-    "INSTITUICAO": "Hospital Estadual",
+    "ORGAO": "Hospital Estadual",
     "MATRICULA": "7654321-0",
-    "SALARIO_EFETIVO": 5280.00,
-    "GRATIFICACAO": 950.00
+    "BASE_CALC": 5280.00
   },
   {
     "NOME": "Fernanda Ribeiro Gomes",
-    "INSTITUICAO": "Câmara Municipal",
+    "ORGAO": "Câmara Municipal",
     "MATRICULA": "3456789-4",
-    "SALARIO_EFETIVO": 4675.25,
-    "GRATIFICACAO": 600.00
+    "BASE_CALC": 4675.25
   },
   {
     "NOME": "Lucas Eduardo Rocha",
-    "INSTITUICAO": "Departamento de Obras",
+    "ORGAO": "Departamento de Obras",
     "MATRICULA": "8901234-7",
-    "SALARIO_EFETIVO": 6940.80,
-    "GRATIFICACAO": 1800.00
+    "BASE_CALC": 6940.80
   },
   {
     "NOME": "Ana Beatriz Carvalho",
-    "INSTITUICAO": "Universidade Estadual",
+    "ORGAO": "Universidade Estadual",
     "MATRICULA": "1122334-5",
-    "SALARIO_EFETIVO": 5785.90,
-    "GRATIFICACAO": 700.00
+    "BASE_CALC": 5785.90
   },
   {
     "NOME": "Gustavo Mendes Ferreira",
-    "INSTITUICAO": "Polícia Civil",
+    "ORGAO": "Polícia Civil",
     "MATRICULA": "5566778-3",
-    "SALARIO_EFETIVO": 6420.10,
-    "GRATIFICACAO": 1350.00
+    "BASE_CALC": 6420.10
   },
   {
     "NOME": "Juliana Araújo Pereira",
-    "INSTITUICAO": "Secretaria de Planejamento",
+    "ORGAO": "Secretaria de Planejamento",
     "MATRICULA": "7788990-6",
-    "SALARIO_EFETIVO": 5899.99,
-    "GRATIFICACAO": 980.25
+    "BASE_CALC": 5899.99
   }
 ]

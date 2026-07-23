@@ -45,7 +45,7 @@ def gerar():
 
     caminho_pdf = Path(pasta_saida.get()) / f"{nome_pdf.get()}{datetime.now().strftime("%d_%m_%Y")}.pdf"
 
-    gerarRelatorio(dados_json=arquivo_json.get(), caminho_pdf=caminho_pdf)
+    gerarRelatorio(dados=arquivo_json.get(), caminho_pdf=caminho_pdf)
 
     messagebox.showinfo(
         "Sucesso",
