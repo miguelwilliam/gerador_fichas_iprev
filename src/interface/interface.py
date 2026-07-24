@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from pathlib import Path
 
-from pdf_gen import gerarRelatorio
+from pdf.pdf_gen import gerarRelatorio
 
 from datetime import datetime
 
