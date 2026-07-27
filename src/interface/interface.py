@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog, messagebox
 import pandas as pd
 from pathlib import Path
@@ -38,7 +39,17 @@ class ExcelToPDFGUI:
         ).grid(row=0, column=2, padx=5)
 
         # Nome da planilha
-        tk.Label(self.root, text="Nome da planilha:").grid(
+        tk.Label(self.root, text="Planilha:").grid(row=1, column=0, padx=10, pady=10)
+
+        self.combo_sheet = ttk.Combobox(
+            self.root,
+            state="readonly",
+            width=40
+        )
+
+        self.combo_sheet.grid(row=1, column=1, sticky="w")
+
+        '''tk.Label(self.root, text="Nome da planilha:").grid(
             row=1, column=0, padx=10, pady=10, sticky="w"
         )
 
@@ -48,7 +59,7 @@ class ExcelToPDFGUI:
             self.root,
             textvariable=self.sheet_name,
             width=30
-        ).grid(row=1, column=1, sticky="w")
+        ).grid(row=1, column=1, sticky="w")'''
 
         # Nome do PDF
         tk.Label(self.root, text="Nome do PDF:").grid(
@@ -93,14 +104,20 @@ class ExcelToPDFGUI:
     def select_excel(self):
         filename = filedialog.askopenfilename(
             title="Selecione um arquivo Excel",
-            filetypes=[
-                ("Arquivos Excel", "*.xlsx *.xls"),
-                ("Todos os arquivos", "*.*")
-            ]
+            filetypes=[("Arquivos Excel", "*.xlsx *.xls")]
         )
 
-        if filename:
-            self.excel_path.set(filename)
+        if not filename:
+            return
+
+        self.excel_path.set(filename)
+
+        xls = pd.ExcelFile(filename)
+
+        self.combo_sheet["values"] = xls.sheet_names
+
+        if xls.sheet_names:
+            self.combo_sheet.current(0)
 
     def select_output(self):
         folder = filedialog.askdirectory(
@@ -113,7 +130,7 @@ class ExcelToPDFGUI:
     def convert(self):
 
         excel = self.excel_path.get().strip()
-        sheet = self.sheet_name.get().strip()
+        sheet = self.combo_sheet.get()
         pdf = self.pdf_name.get().strip()
         output = self.output_path.get().strip()
 
