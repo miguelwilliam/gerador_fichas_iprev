@@ -73,5 +73,7 @@ def teste_gerar_documento(meuExcel, df):
 
     for chave, valor in dados.items(): print(f'{chave} > {valor}')
 
-    sucesso = gerarGuia(dados, r'./relatorio_teste.pdf')
-    print('SUCESSO:',sucesso)
+    
+    #sucesso = gerarGuia(dados, r'./relatorio_teste.pdf')
+    #print('SUCESSO:', sucesso)
+

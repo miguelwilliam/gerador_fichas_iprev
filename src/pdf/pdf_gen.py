@@ -7,7 +7,20 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 
 
 
-def gerarGuia(dados, caminho_pdf):
+def gerarGuia(dados:dict, caminho_pdf, exclude_competencias:list=['BC']):
+    """
+    Gera o documento Guia da Previdência Própria com base na entrada de um dicionário de dados, na seguinte formatação:
+    
+    {
+    NOME > João Silva
+    ADMISSAO > dd/mm/YYYY
+    ORGAO > Instituição
+    1 > {'COMPETENCIA': 'Jan/26', 'BASE_CALC': 1783.1, 'IPREV': 249.63400000000001, 'PATRONAL': 282.26473}
+    2 > {'COMPETENCIA': 'Fev/26', ...}
+    }
+
+    O parâmetro 'exclude_competencias' é uma lista de strings das competências serem puladas.
+    """
     try:
         story = []
 
@@ -20,6 +33,10 @@ def gerarGuia(dados, caminho_pdf):
 
         for i in range(len(dados)-3):
             i = str(i+1)
+
+            # PULAR PÁGINAS QUE EU EXCLUIR:
+            if dados[i]['COMPETENCIA'] in exclude_competencias: 
+                continue
 
             multa = 0
             

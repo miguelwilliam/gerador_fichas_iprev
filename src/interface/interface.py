@@ -12,8 +12,9 @@ class ExcelToPDFGUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Excel para PDF")
-        self.root.geometry("600x250")
+        self.root.geometry("600x400")
         self.root.resizable(False, False)
+        self.checkbox_vars = {}
 
         self.create_widgets()
 
@@ -49,21 +50,74 @@ class ExcelToPDFGUI:
 
         self.combo_sheet.grid(row=1, column=1, sticky="w")
 
-        '''tk.Label(self.root, text="Nome da planilha:").grid(
-            row=1, column=0, padx=10, pady=10, sticky="w"
+        self.combo_sheet.bind(
+            "<<ComboboxSelected>>",
+            self.on_sheet_changed
         )
 
-        self.sheet_name = tk.StringVar()
-
-        tk.Entry(
+        # Frame das competências
+        self.frame_competencias = tk.LabelFrame(
             self.root,
-            textvariable=self.sheet_name,
-            width=30
-        ).grid(row=1, column=1, sticky="w")'''
+            text="Competências"
+        )
+
+        self.frame_competencias.grid(
+            row=2,
+            column=0,
+            columnspan=3,
+            padx=10,
+            pady=10,
+            sticky="nsew"
+        )
+
+        # Canvas
+        self.canvas_comp = tk.Canvas(
+            self.frame_competencias,
+            height=100
+        )
+
+        # Barra de rolagem
+        self.scrollbar_comp = tk.Scrollbar(
+            self.frame_competencias,
+            orient="vertical",
+            command=self.canvas_comp.yview
+        )
+
+        self.canvas_comp.configure(
+            yscrollcommand=self.scrollbar_comp.set
+        )
+
+        # Frame que conterá os checkboxes
+        self.frame_checks = tk.Frame(self.canvas_comp)
+
+        self.canvas_comp.create_window(
+            (0, 0),
+            window=self.frame_checks,
+            anchor="nw"
+        )
+
+        # Atualiza a área rolável sempre que o conteúdo muda
+        self.frame_checks.bind(
+            "<Configure>",
+            lambda e: self.canvas_comp.configure(
+                scrollregion=self.canvas_comp.bbox("all")
+            )
+        )
+
+        self.canvas_comp.pack(
+            side="left",
+            fill="both",
+            expand=True
+        )
+
+        self.scrollbar_comp.pack(
+            side="right",
+            fill="y"
+        )
 
         # Nome do PDF
         tk.Label(self.root, text="Nome do PDF:").grid(
-            row=2, column=0, padx=10, pady=10, sticky="w"
+            row=3, column=0, padx=10, pady=10, sticky="w"
         )
 
         self.pdf_name = tk.StringVar()
@@ -72,11 +126,11 @@ class ExcelToPDFGUI:
             self.root,
             textvariable=self.pdf_name,
             width=30
-        ).grid(row=2, column=1, sticky="w")
+        ).grid(row=3, column=1, sticky="w")
 
         # Pasta de saída
         tk.Label(self.root, text="Pasta de saída:").grid(
-            row=3, column=0, padx=10, pady=10, sticky="w"
+            row=4, column=0, padx=10, pady=10, sticky="w"
         )
 
         self.output_path = tk.StringVar()
@@ -85,13 +139,13 @@ class ExcelToPDFGUI:
             self.root,
             textvariable=self.output_path,
             width=55
-        ).grid(row=3, column=1)
+        ).grid(row=4, column=1)
 
         tk.Button(
             self.root,
             text="Selecionar",
             command=self.select_output
-        ).grid(row=3, column=2, padx=5)
+        ).grid(row=4, column=2, padx=5)
 
         # Botão principal
         tk.Button(
@@ -99,7 +153,60 @@ class ExcelToPDFGUI:
             text="Converter",
             width=20,
             command=self.convert
-        ).grid(row=4, column=1, pady=25)
+        ).grid(row=5, column=1, pady=25)
+
+    def atualizar_competencias(self, competencias):
+        # Remove os checkboxes antigos
+        for widget in self.frame_checks.winfo_children():
+            widget.destroy()
+
+        self.checkbox_vars.clear()
+
+        # Cria novos checkboxes
+        for i, competencia in enumerate(competencias):
+
+            var = tk.BooleanVar(value=True)
+
+            chk = tk.Checkbutton(
+                self.frame_checks,
+                text=competencia,
+                variable=var
+            )
+
+            linha = i // 4
+            coluna = i % 4
+
+            chk.grid(
+                row=linha,
+                column=coluna,
+                sticky="w",
+                padx=8,
+                pady=2
+            )
+
+            self.checkbox_vars[competencia] = var
+
+        self.frame_checks.update_idletasks()
+
+        self.canvas_comp.configure(
+            scrollregion=self.canvas_comp.bbox("all")
+        )
+
+    def pegar_competencias(self, filename, sheetname):
+        #Chamar a atualização de competencias   
+        meuExcel = Spreadsheet(ESTRUTURA['CELULAS'], ESTRUTURA['LINHAS'], paginas=pd.ExcelFile(filename).sheet_names)
+        meuExcel.caminho = filename
+
+        df = meuExcel.carregar_pagina(sheetname)
+
+        competencias = []
+        for col in range(len(df.columns)):
+            if col == 0: continue
+            pos_pandas = [meuExcel.linhas['COMPETENCIA']-1, col]
+            
+            competencias.append(df.iloc[pos_pandas[0], pos_pandas[1]])
+
+        return competencias
 
     def select_excel(self):
         filename = filedialog.askopenfilename(
@@ -119,6 +226,18 @@ class ExcelToPDFGUI:
         if xls.sheet_names:
             self.combo_sheet.current(0)
 
+        competencias = self.pegar_competencias(filename = filename, sheetname = xls.sheet_names[0])
+
+        self.atualizar_competencias(competencias)
+
+    def on_sheet_changed(self, event):
+        competencias = self.pegar_competencias(
+            self.excel_path.get(),
+            self.combo_sheet.get()
+        )
+
+        self.atualizar_competencias(competencias)
+
     def select_output(self):
         folder = filedialog.askdirectory(
             title="Selecione a pasta de saída"
@@ -133,6 +252,11 @@ class ExcelToPDFGUI:
         sheet = self.combo_sheet.get()
         pdf = self.pdf_name.get().strip()
         output = self.output_path.get().strip()
+        competencias_nao_selecionadas = [
+            competencia
+            for competencia, var in self.checkbox_vars.items()
+            if not var.get()
+        ]
 
         if not excel:
             messagebox.showerror("Erro", "Selecione um arquivo Excel.")
@@ -187,11 +311,11 @@ class ExcelToPDFGUI:
 
         for chave, valor in dados.items(): print(f'{chave} > {valor}')
 
-        sucesso = gerarGuia(dados, pdf_path)
+        sucesso = gerarGuia(dados, pdf_path, competencias_nao_selecionadas)
         print('SUCESSO:',sucesso)
 
-
-        messagebox.showinfo(
+        if sucesso:
+            messagebox.showinfo(
             "Dados informados",
             f"""Excel:
 {excel}
@@ -203,6 +327,8 @@ PDF:
 {pdf_path}
 """
         )
+        else:
+            messagebox.showinfo("Erro", "Um erro aconteceu na geração do seu relatório. Cheque as suas configurações antes de tentar novamente.")
 
     def run(self):
         self.root.mainloop()
