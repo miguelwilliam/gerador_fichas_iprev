@@ -7,7 +7,7 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 
 
 
-def gerarRelatorio(dados, caminho_pdf):
+def gerarGuia(dados, caminho_pdf):
     try:
         story = []
 
@@ -51,7 +51,6 @@ def gerarRelatorio(dados, caminho_pdf):
 
 
         # ADICIONAR OS VALORES PARA CADA FUNCIONÁRIO
-
 
         # ADICIONAR VALORES DE SOMA NO FINAL DA TABELA
 

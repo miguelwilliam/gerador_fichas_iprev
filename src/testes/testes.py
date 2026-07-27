@@ -1,31 +1,15 @@
 import os
 from dotenv import load_dotenv
 
-from src.my_classes.spreadsheet import Spreadsheet
-from src.pdf.pdf_gen import gerarRelatorio
+from src.my_classes.spreadsheet import Spreadsheet, ESTRUTURA
+from src.pdf.pdf_gen import gerarGuia
 
 def carregarPlanilha():
     load_dotenv()
 
-    estrutura = {
-        'CELULAS': 
-        {
-            'NOME': 'A1',
-            'ORGAO': 'B3',
-        },
-
-        'LINHAS': 
-        {
-            'COMPETENCIA': 5,
-            'BASE_CALC': 8,
-            'IPREV': 9,
-            'PATRONAL': 13
-        }
-    }
-
     meuExcel = Spreadsheet(
-        celulas=estrutura['CELULAS'], 
-        linhas=estrutura['LINHAS'], 
+        celulas=ESTRUTURA['CELULAS'], 
+        linhas=ESTRUTURA['LINHAS'], 
         paginas=['ALIQUOTA', 'CLAUDETE', 'JUNIOR']
         )
 
@@ -89,5 +73,5 @@ def teste_gerar_documento(meuExcel, df):
 
     for chave, valor in dados.items(): print(f'{chave} > {valor}')
 
-    sucesso = gerarRelatorio(dados, r'./relatorio_teste.pdf')
+    sucesso = gerarGuia(dados, r'./relatorio_teste.pdf')
     print('SUCESSO:',sucesso)

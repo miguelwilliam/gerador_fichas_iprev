@@ -1,8 +1,8 @@
-from src.testes import testes
+from src.interface import interface
 
 def main():
-    meuExcel, df = testes.carregarPlanilha()
-    testes.teste_gerar_documento(meuExcel, df)
+    app = interface.ExcelToPDFGUI()
+    app.run()
 
 if __name__ == "__main__":
     main()

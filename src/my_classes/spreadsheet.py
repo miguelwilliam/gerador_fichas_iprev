@@ -2,6 +2,22 @@ from pathlib import Path
 import pandas as pd
 import re
 
+ESTRUTURA = {
+        'CELULAS': 
+        {
+            'NOME': 'A1',
+            'ORGAO': 'B3',
+        },
+
+        'LINHAS': 
+        {
+            'COMPETENCIA': 5,
+            'BASE_CALC': 8,
+            'IPREV': 9,
+            'PATRONAL': 13
+        }
+}
+
 class Spreadsheet():
     def __init__(self, celulas:dict, linhas:dict, paginas:list):
         self.celulas = celulas
