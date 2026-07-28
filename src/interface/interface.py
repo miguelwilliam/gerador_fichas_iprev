@@ -4,16 +4,24 @@ from tkinter import filedialog, messagebox
 import pandas as pd
 from pathlib import Path
 
+from src.utils.paths import resource_path
 from src.pdf.pdf_gen import gerarGuia
 from src.my_classes.spreadsheet import Spreadsheet, ESTRUTURA
 
 class ExcelToPDFGUI:
-
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Excel para PDF")
+        self.root.title("Gerador de GPP")
         self.root.geometry("550x370")
         self.root.resizable(False, False)
+        icon = tk.PhotoImage(file=resource_path("static", "img", "icon.png"))
+
+        self.root.iconphoto(False, icon)
+
+        # Mantém uma referência para evitar que a imagem seja coletada pelo GC
+        self.icon = icon
+
+
         self.checkbox_vars = {}
 
         self.create_widgets()
