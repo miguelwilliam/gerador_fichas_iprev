@@ -14,13 +14,7 @@ class ExcelToPDFGUI:
         self.root.title("Gerador de GPP")
         self.root.geometry("550x370")
         self.root.resizable(False, False)
-        icon = tk.PhotoImage(file=resource_path("static", "img", "icon.png"))
-
-        self.root.iconphoto(False, icon)
-
-        # Mantém uma referência para evitar que a imagem seja coletada pelo GC
-        self.icon = icon
-
+        self.root.iconbitmap(resource_path("static", "img", "icon.ico"))
 
         self.checkbox_vars = {}
 
