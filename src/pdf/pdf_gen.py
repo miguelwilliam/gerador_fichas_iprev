@@ -28,8 +28,10 @@ def gerarGuia(dados:dict, caminho_pdf, exclude_competencias:list=['BC']):
         admissao = datetime.strptime(dados['ADMISSAO'], '%d/%m/%Y')
         if admissao < datetime.strptime('31/12/2012', '%d/%m/%Y') or admissao > datetime.strptime('01/01/2025', '%d/%m/%Y'):
             identificador = 'FR - IPREV'
+            conta_corrente = '31.651-2'    
         else:
             identificador = 'FC - IPREV'
+            conta_corrente = '9197-9'
 
         for i in range(len(dados)-3):
             i = str(i+1)
@@ -58,7 +60,7 @@ def gerarGuia(dados:dict, caminho_pdf, exclude_competencias:list=['BC']):
                 [Paragraph(f'GUIA REFERENTE A CESSÃO DO SERVIDOR {dados['NOME']}', my_styles.estiloParagrafo1), '', '13. AUTENTICAÇÃO BANCÁRIA', ''],
                 ['Banco do Brasil: 001', '', '', ''],
                 ['Agência: 4486-5', '', '', ''],
-                ['Conta Corrente: 31.651-2', '', '', '']
+                [f'Conta Corrente: {conta_corrente}', '', '', '']
             ]
 
             tabela = Table(dados_tabela, colWidths=[95,285,95,95])

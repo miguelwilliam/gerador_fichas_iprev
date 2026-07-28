@@ -50,6 +50,8 @@ estiloTabela = [
     ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
     ('VALIGN', (2, 10), (2, 10), 'TOP'), # exceção, por algum motivo
+    ('ALIGN', (-1, 0), (-1, -4), 'RIGHT'),
+    ('ALIGN', (-1, 1), (-1, 2), 'CENTER'),
 
     ('SPAN', (0, 0), (1,0)),
     ('SPAN', (0, 1), (1,1)),
