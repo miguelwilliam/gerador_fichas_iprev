@@ -12,7 +12,7 @@ class ExcelToPDFGUI:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Excel para PDF")
-        self.root.geometry("600x400")
+        self.root.geometry("550x370")
         self.root.resizable(False, False)
         self.checkbox_vars = {}
 
