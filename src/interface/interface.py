@@ -16,7 +16,8 @@ class ExcelToPDFGUI:
         self.root.resizable(False, False)
         self.root.iconbitmap(resource_path("static", "img", "icon.ico"))
 
-        self.checkbox_vars = {}
+        self.competencias = {}
+        self.multa_vars = {}
 
         self.create_widgets()
 
@@ -91,6 +92,7 @@ class ExcelToPDFGUI:
 
         # Frame que conterá os checkboxes
         self.frame_checks = tk.Frame(self.canvas_comp)
+        self.frame_checks.grid_columnconfigure(0, weight=1)
 
         self.canvas_comp.create_window(
             (0, 0),
@@ -105,6 +107,12 @@ class ExcelToPDFGUI:
                 scrollregion=self.canvas_comp.bbox("all")
             )
         )
+
+        self.frame_checks.bind("<Enter>", self._bind_mousewheel)
+        self.frame_checks.bind("<Leave>", self._unbind_mousewheel)
+
+        self.canvas_comp.bind("<Enter>", self._bind_mousewheel)
+        self.canvas_comp.bind("<Leave>", self._unbind_mousewheel)
 
         self.canvas_comp.pack(
             side="left",
@@ -162,31 +170,57 @@ class ExcelToPDFGUI:
         for widget in self.frame_checks.winfo_children():
             widget.destroy()
 
-        self.checkbox_vars.clear()
+        self.competencias.clear()
+
+        tk.Label(
+            self.frame_checks,
+            text="Competência",
+            font=("Segoe UI", 9, "bold")
+        ).grid(row=0, column=0, sticky="w", padx=5)
+
+        tk.Label(
+            self.frame_checks,
+            text="Multa (R$)",
+            font=("Segoe UI", 9, "bold")
+        ).grid(row=0, column=1, padx=5)
 
         # Cria novos checkboxes
         for i, competencia in enumerate(competencias):
 
-            var = tk.BooleanVar(value=True)
+            check_var = tk.BooleanVar(value=True)
+            multa_var = tk.StringVar()
 
             chk = tk.Checkbutton(
                 self.frame_checks,
                 text=competencia,
-                variable=var
+                variable=check_var
             )
 
-            linha = i // 4
-            coluna = i % 4
+            entry = tk.Entry(
+                self.frame_checks,
+                textvariable=multa_var,
+                width=10,
+                justify="right"
+            )
 
             chk.grid(
-                row=linha,
-                column=coluna,
+                row=i+1,
+                column=0,
                 sticky="w",
-                padx=8,
+                padx=5,
                 pady=2
             )
 
-            self.checkbox_vars[competencia] = var
+            entry.grid(
+                row=i+1,
+                column=1,
+                padx=5
+            )
+
+            self.competencias[competencia] = {
+                "checked": check_var,
+                "multa": multa_var
+            }
 
         self.frame_checks.update_idletasks()
 
@@ -256,9 +290,26 @@ class ExcelToPDFGUI:
         output = self.output_path.get().strip()
         competencias_nao_selecionadas = [
             competencia
-            for competencia, var in self.checkbox_vars.items()
-            if not var.get()
+            for competencia, dados in self.competencias.items()
+            if not dados["checked"].get()
         ]
+
+        competencias = []
+
+        multas = {}
+
+        for competencia, dados in self.competencias.items():
+
+            if dados["checked"].get():
+
+                competencias.append(competencia)
+
+                texto = dados["multa"].get().strip()
+
+                if texto:
+                    multas[competencia] = float(
+                        texto.replace(",", ".")
+                    )
 
         if not excel:
             messagebox.showerror("Erro", "Selecione um arquivo Excel.")
@@ -311,6 +362,9 @@ class ExcelToPDFGUI:
                 # print(f'{dado} > {df.iloc[pos_pandas[0], pos_pandas[1]]}')
                 dados[str(col)][dado] = df.iloc[pos_pandas[0], pos_pandas[1]]
 
+            if dados[str(col)]['COMPETENCIA'] in multas.keys():
+                dados[str(col)]['MULTA'] = multas[dados[str(col)]['COMPETENCIA']]
+
         for chave, valor in dados.items(): print(f'{chave} > {valor}')
 
         sucesso = gerarGuia(dados, pdf_path, competencias_nao_selecionadas)
@@ -331,6 +385,18 @@ PDF:
         )
         else:
             messagebox.showinfo("Erro", "Um erro aconteceu na geração do seu relatório. Cheque as suas configurações antes de tentar novamente.")
+
+    def _on_mousewheel(self, event):
+        self.canvas_comp.yview_scroll(
+            int(-event.delta / 120),
+            "units"
+        )
+
+    def _bind_mousewheel(self, event):
+        self.canvas_comp.bind_all("<MouseWheel>", self._on_mousewheel)
+
+    def _unbind_mousewheel(self, event):
+        self.canvas_comp.unbind_all("<MouseWheel>")
 
     def run(self):
         self.root.mainloop()

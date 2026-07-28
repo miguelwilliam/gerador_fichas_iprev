@@ -38,7 +38,11 @@ def gerarGuia(dados:dict, caminho_pdf, exclude_competencias:list=['BC']):
             if dados[i]['COMPETENCIA'] in exclude_competencias: 
                 continue
 
-            multa = 0
+            # PROCURAR VALOR DE MULTA EXISTENTE NOS DADOS
+            try:
+                multa = dados[i]['MULTA']
+            except:
+                multa = 0
             
             dados_tabela = [
                 [Paragraph('INST. PREVIDÊNCIA DE SÃO GONÇALO DO AMARANTE', my_styles.estiloParagrafo2), '', '3. BASE DE CÁLCULO', f'R$ {dados[i]['BASE_CALC']:,.2f}'],
@@ -49,7 +53,7 @@ def gerarGuia(dados:dict, caminho_pdf, exclude_competencias:list=['BC']):
                 [Paragraph('R Maria de Fátima Varela Inácio, 61 - Santa Terezinha', my_styles.estiloParagrafo1), '', '8. CONTRIBUIÇÃO PAT.\nSUPLEMENTAR (7,98%)', 'R$ -'],
                 [f'{dados['ORGAO']}', '', '9. (-) DEDUÇÕES', 'R$ -'],
                 ['2. VENCIMENTO\n(Uso do IPREV)', Paragraph('<i>DIA 10 DO MÊS SEGUINTE À COMPETÊNCIA</i>', my_styles.estiloParagrafo1), '10. VALOR IPREV', f'R$ {(dados[i]['IPREV'] + dados[i]['PATRONAL']):,.2f}'],
-                [Paragraph('<b>ATENÇÃO:</b> É vedada a utilização de GPP para recolhimento de receita de valor inferior ao estipulado em Resolução publicada pelo IPREV. A receita que resultar valor inferior deverá ser adicionada à contribuição ou importância correspondente nos meses subsequentes, até que o total seja igual ou superior ao valor mínimo fixado.', my_styles.estiloParagrafo1), '', '11. ATM, MULTA\nE JUROS', 'À DEFINIR!!'],
+                [Paragraph('<b>ATENÇÃO:</b> É vedada a utilização de GPP para recolhimento de receita de valor inferior ao estipulado em Resolução publicada pelo IPREV. A receita que resultar valor inferior deverá ser adicionada à contribuição ou importância correspondente nos meses subsequentes, até que o total seja igual ou superior ao valor mínimo fixado.', my_styles.estiloParagrafo1), '', '11. ATM, MULTA\nE JUROS', f'R$ {multa:,.2f}'],
                 ['', '', '12. TOTAL', f'R$ {(dados[i]['IPREV'] + dados[i]['PATRONAL'] + multa):,.2f}'],
                 [Paragraph(f'GUIA REFERENTE A CESSÃO DO SERVIDOR {dados['NOME']}', my_styles.estiloParagrafo1), '', '13. AUTENTICAÇÃO BANCÁRIA', ''],
                 ['Banco do Brasil: 001', '', '', ''],
